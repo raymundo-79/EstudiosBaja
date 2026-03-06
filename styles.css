@@ -1,0 +1,575 @@
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: white;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1000;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  scroll-behavior: smooth;
+  height: 100%;
+  justify-content: space-around;
+}
+
+main {
+  padding-top: 136px; /* espacio para evitar que el menú tape el contenido */
+  padding-bottom: 20px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: white;
+}
+
+nav {
+	padding: 10px
+}
+
+nav ul li {
+	float: left;
+}
+
+nav ul li a {
+  display: block;
+  color: #0066ff;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+nav ul li a.active {
+  border-bottom: 2px solid #0066ff;
+}
+
+.gallery {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;   /* Centra horizontalmente */
+}
+
+.galleryproductions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;   /* Centra horizontalmente */
+}
+
+.gallery {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 40px;
+}
+
+.galleryproductions {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 40px;
+}
+
+.gallery img {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.galleryproductions img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.imagen-contenedor {
+      width:100%;
+      max-width: 100%;           /* Se ajusta al ancho del contenedor */
+	  margin: 0 auto;
+      padding: 20px;
+      justify-content: center;   /* Centra horizontalmente */
+      align-items: center;       /* Centra verticalmente si quieres toda la página */
+    }
+
+.imagen-responsive {
+      width: 100%;              /* Tamaño máximo deseado */
+      height: auto;              /* Mantiene la proporción */
+	  display: block;
+    }
+	
+/* === Visor tipo Lightbox === */
+.overlay {
+  display: none; /* oculto por defecto */
+  position: fixed;
+  z-index: 3000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.85);
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 6px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+/* Botón cerrar */
+.cerrar {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 40px;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+}
+	
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+form input, form textarea {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+form button {
+  padding: 10px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: green
+}
+
+a {
+	text-decoration: solid;
+}
+
+/* Estilo general de los tabs */
+.tabs {
+  max-width: 99%;
+  margin: 40px auto;
+  font-family: Arial, sans-serif;
+}
+
+/* Botones */
+.tab-buttons {
+  display: flex;
+  border-bottom: 2px solid #5C9DFF;
+  border-radius: 8px;
+  gap: 10px;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 10px;
+  background: #5C9DFF;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+  border-radius: 8px;
+}
+
+.tab-button:hover {
+  background: #E6F0FF;
+  border-radius: 8px;
+}
+
+.tab-button.active {
+  background: #B8D4FF;
+  border-bottom: 2px solid #000;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+/* Paneles de contenido */
+.tab-content {
+  padding: 20px;
+  border: 1px solid #06f;
+  border-top: none;
+  background: #fff;
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+.tooltip-container {
+  width: 30%;
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-container-d {
+  width: 100%;
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-image {
+  width: 32%;
+  cursor: pointer;
+}
+.tooltip-image-d {
+  width: 100%;
+  cursor: pointer;
+}
+
+/* Tooltip oculto inicialmente */
+.tooltip-box {
+  position: absolute;
+  top: 100%;  /* justo debajo de la imagen */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+  display: none;           /* oculto por defecto */
+  z-index: 10;
+}
+
+.tooltip-box::after {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent transparent #333 transparent;
+}
+
+/* --- Tarjetas de contacto --- */
+/* Contenedor para poner tarjetas lado a lado centradas */
+.contenedor-tarjetas{
+  width: 100%;
+  display: flex;
+  justify-content: center;  /* centra el grupo */
+  align-items: flex-start;
+  gap: 30px;
+  flex-wrap: wrap;          /* permite bajar si no cabe */
+  margin: 30px auto;
+}
+section {
+  width: 100%;
+}
+.tarjeta {
+  width: 300px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  transition: transform 0.3s ease;
+  text-align: center;
+  margin: 0;   /* el espacio ya lo controla gap del contenedor */
+}
+
+.tarjeta:hover {
+  transform: scale(1.03);
+}
+
+.tarjeta img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%; /* Círculo */
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 2px solid #ccc;
+}
+
+.tarjeta h2 {
+  margin: 10px 0 5px;
+  font-size: 20px;
+  color: #333;
+}
+
+.tarjeta p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Estilos generales del formulario */
+#formulario-contacto {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Estilo de etiquetas */
+.formulario-contacto label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+/* Input y textarea */
+.mi-input {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 15px;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+/* Opcional: estilo si está inválido (HTML5) */
+.mi-input:invalid {
+  box-shadow: none;
+  border-color: initial; /* o usa tu color por defecto */
+}
+
+/* Al enfocar */
+.mi-input:focus {
+  border-color: #007BFF;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.2);
+  background-color: #fff;
+  outline: none;
+}
+
+/* Botón de envío */
+.boton-enviar {
+  background-color: #007BFF;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+/* Hover sobre el botón */
+.boton-enviar:hover {
+  background-color: #0056b3;
+}
+
+label {
+  width: auto;
+  display: block;
+}
+
+p {
+	margin-top: 10px;     /* Margen exterior */
+	margin-bottom: 10px;
+	padding: 5px 10px;    /* Espaciado interior */
+}
+p {
+	color: #333;                 /* Color del texto */
+	font-family: 'Arial', sans-serif;  /* Tipo de letra */
+	font-size: 16px;             /* Tamaño */
+	font-weight: 400;            /* Grosor: 100–900 o bold */
+	font-style: italic;          /* Cursiva */
+	text-align: justify;         /* Alineación: left, right, center, justify */
+	line-height: 1.6;            /* Altura de línea */
+	letter-spacing: 0.5px;       /* Espaciado entre letras */
+	word-spacing: 2px;           /* Espaciado entre palabras */
+	text-decoration: underline;  /* subrayado, tachado */
+}
+
+
+.tab-panel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;    /* evita desbordamiento */
+  background: #fafafa;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+#visor-pdf {
+  width: 100%;
+  height: calc(100% - 60px); /* deja espacio para los botones */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  overflow: auto; /* permite scroll si el PDF es más grande */
+  border: 1px solid #ddd;
+}
+
+#controles {
+  text-align: center;
+  margin-top: 8px;
+}
+
+#controles button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  margin: 4px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#controles button:hover {
+  background: #0056b3;
+}
+
+#pagina-info{
+	font-weight: bold;
+	margin: 0 8px;
+}
+
+#the-canvas {
+  border: 1px solid black;
+  direction: ltr;
+}
+
+/* vista de mobiles */
+
+/* 📱 Vista para dispositivos móviles (pantallas menores a 768px) */
+@media (max-width: 768px) {
+  /* --- Espaciado del contenido --- */
+  main {
+    padding-top: 190px;
+    padding-bottom: 10px;
+  }
+
+  /* --- Galerías de imágenes --- */
+  .gallery, .galleryproductions {
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .gallery img, .galleryproductions img {
+    width: 100%;
+    height: auto;
+  }
+
+  /* --- Formularios --- */
+  .formulario-contacto {
+    width: 90%;
+    padding: 20px;
+    margin: 20px auto;
+  }
+
+  .mi-input {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .boton-enviar {
+    font-size: 15px;
+    padding: 10px;
+  }
+  
+  .tooltip-container {
+    width: 100%;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .tooltip-image {
+    width: 100%;
+    cursor: pointer;
+  }
+
+  /* --- Tarjetas de contacto --- */
+  .contenedor-tarjetas {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tarjeta {
+    width: 90%;
+    margin: 10px auto;
+  }
+
+  /* --- Tabs --- */
+  .tab-buttons {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .tab-button {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  /* --- PDF Viewer --- */
+  .tab-panel {
+    padding: 5px;
+    height: auto;
+  }
+  .tab-panel.active {
+    display: block;
+  }
+
+  #visor-pdf {
+    height: 400px; /* altura reducida para móviles */
+  }
+
+  /* --- Textos generales --- */
+  p {
+    font-size: 15px;
+    text-align: left;
+    text-decoration: none;
+  }
+
+  label {
+    width: 100%;
+  }
+
+  nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .gallery img, .galleryproductions img {
+    width: 100%;
+  }
+
+  #visor-pdf {
+    height: 500px;
+  }
+}

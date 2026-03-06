@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>Facilities</title>
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<!-- Menú principal -->
+		<header>
+			<div class="logo">
+				<img src="img/logo.jpg" alt="Logo" />
+			</div>
+			<div class="nav">
+				<!-- Botón hamburguesa (solo visible en móvil) -->
+				<div class="menu-toggle" id="menu-toggle">
+				☰
+				</div>
+				<nav id="main-nav">
+					<ul>
+						<li><a href="index.html">Main Page</a></li>
+						<li><a href="facilities.html" class="active">Facilities</a></li>
+						<li><a href="productions.html">Productions</a></li>
+						<li><a href="contact.html">Contact us</a></li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+		<!-- Cuerpo de la Pagina -->
+		<main>
+			<section>
+				<h2>Facilities</h2>
+				<div class="tabs">
+					<div class="tab-buttons">
+						<button class="tab-button active" onclick="showTab(0)">Tanks</button>
+						<button class="tab-button" onclick="showTab(1)">Stages</button>
+						<button class="tab-button" onclick="showTab(2)">Facilities</button>
+						<button class="tab-button" onclick="showTab(3)">Diagrams</button>
+					</div>
+					<div class="tab-content">
+						<div class="tab-panel active">
+							<div class="gallery"><!-- Tanks -->
+								<div class="tooltip-container">
+									<img src="img/Tank1.jpg" alt="Tank 1" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 1 tooltip</div>
+								</div>
+								<div class="tooltip-container">
+									<img src="img/Tank2.jpg" alt="Tank 2" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 2 tooltip</div>
+								</div>
+
+								<div class="tooltip-container">
+									<img src="img/Tank3.jpg" alt="Tank 3" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 3 tooltip</div>
+								</div>
+								<div class="tooltip-container">
+									<img src="img/Tank4.jpg" alt="Tank 4" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 4 tooltip</div>
+								</div>
+								<div class="tooltip-container">
+									<img src="img/Tank5.jpg" alt="Tank 5" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 5 tooltip</div>
+								</div>
+								<div class="tooltip-container">
+									<img src="img/Tank6.jpg" alt="Tank 6" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 6 tooltip</div>
+								</div>
+								<div class="tooltip-container">
+									<img src="img/Tank7.jpg" alt="Tank 7" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 7 tooltip</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-panel">
+							<div class="gallery"><!-- Stages -->
+								<div class="tooltip-container">
+									<img src="img/Foro1.jpg" alt="Foro 1" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 1 tooltip</div>
+								</div>
+								<div class="tooltip-container">
+									<img src="img/Foro2.jpg" alt="Foro 2" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 2 tooltip</div>
+								</div>
+								<div class="tooltip-container">
+									<img src="img/Foro3.jpg" alt="Foro 3" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 3 tooltip</div>
+								</div>
+								<div class="tooltip-container">
+									<img src="img/Foro4.jpg" alt="Foro 4" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 4 tooltip</div>
+								</div>
+								<div class="tooltip-container">
+									<img src="img/Foro5.jpg" alt="Foro 5" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 5 tooltip</div>
+								</div>
+								<div class="tooltip-container">
+									<img src="img/Foro6.jpg" alt="Foro 6" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 6 tooltip</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-panel">
+							<div class="gallery"><!-- Facilities -->
+								<div class="tooltip-container">
+									<img src="img/Oficina1.jpg" alt="Oficina 1" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 1 tooltip</div>
+								</div>
+								<div class="tooltip-container">
+									<img src="img/Oficina2.jpg" alt="Oficina 2" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 2 tooltip</div>
+								</div>
+								<div class="tooltip-container">
+									<img src="img/Oficina3.jpg" alt="Oficina 3" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 3 tooltip</div>
+								</div>
+								<div class="tooltip-container">
+									<img src="img/Oficina4.jpg" alt="Oficina 4" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 4 tooltip</div>
+								</div>
+								<div class="tooltip-container">
+									<img src="img/Oficina5.jpg" alt="Oficina 5" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 5 tooltip</div>
+								</div>
+								<div class="tooltip-container">
+									<img src="img/Oficina6.jpg" alt="Oficina 6" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 6 tooltip</div>
+								</div>
+								<div class="tooltip-container">
+									<img src="img/Oficina7.jpg" alt="Oficina 6" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 7 tooltip</div>
+								</div>
+								<div class="tooltip-container">
+									<img src="img/Oficina8.jpg" alt="Oficina 7" class="tooltip-image" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Image 8 tooltip</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-panel">
+							<div class="gallery"><!-- Diagrams -->
+								<div class="tooltip-container-d">
+									<img src="img/Diagrams_BAJA STUDIOS_page-0001.jpg" alt="Diagrama 1" class="tooltip-image-d" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Diagram 1 tooltip</div>
+								</div>
+								<div class="tooltip-container-d">
+									<img src="img/Diagrams_BAJA STUDIOS_page-0002.jpg" alt="Diagrama 2" class="tooltip-image-d" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Diagram 2 tooltip</div>
+								</div>
+								<div class="tooltip-container-d">
+									<img src="img/Diagrams_BAJA STUDIOS_page-0003.jpg" alt="Diagrama 3" class="tooltip-image-d" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Diagram 3 tooltip</div>
+								</div>
+								<div class="tooltip-container-d">
+									<img src="img/Diagrams_BAJA STUDIOS_page-0004.jpg" alt="Diagrama 4" class="tooltip-image-d" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Diagram 4 tooltip</div>
+								</div>
+								<div class="tooltip-container-d">
+									<img src="img/Diagrams_BAJA STUDIOS_page-0005.jpg" alt="Diagrama 5" class="tooltip-image-d" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Diagram 5 tooltip</div>
+								</div>
+								<div class="tooltip-container-d">
+									<img src="img/Diagrams_BAJA STUDIOS_page-0006.jpg" alt="Diagrama 6" class="tooltip-image-d" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Diagram 6 tooltip</div>
+								</div>
+								<div class="tooltip-container-d">
+									<img src="img/Diagrams_BAJA STUDIOS_page-0007.jpg" alt="Diagrama 7" class="tooltip-image-d" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Diagram 7 tooltip</div>
+								</div>
+								<div class="tooltip-container-d">
+									<img src="img/Diagrams_BAJA STUDIOS_page-0008.jpg" alt="Diagrama 8" class="tooltip-image-d" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Diagram 8 tooltip</div>
+								</div>
+								<div class="tooltip-container-d">
+									<img src="img/Diagrams_BAJA STUDIOS_page-0009.jpg" alt="Diagrama 9" class="tooltip-image-d" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Diagram 9 tooltip</div>
+								</div>
+								<div class="tooltip-container-d">
+									<img src="img/Diagrams_BAJA STUDIOS_page-0010.jpg" alt="Diagrama 10" class="tooltip-image-d" onclick="toggleTooltip(this)">
+									<div class="tooltip-box">Diagram 10 tooltip</div>
+								</div>
+								<!-- Contenedor oculto para el visor -->
+								<div id="visor-imagen" class="overlay">
+									<span class="cerrar">&times;</span>
+									<img class="imagen-ampliada" id="imagen-ampliada" src="" alt="Imagen ampliada">
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+		<script src="script.js"></script>
+		<!-- Pie de pagina -->
+		<footer>
+			<p>&copy; 2025 Baja Studios. All rights reserved.</p>
+		</footer>
+	</body>
+</html>
