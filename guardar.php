@@ -8,6 +8,15 @@ const MAX_NAME_LENGTH = 120;
 const MAX_MESSAGE_LENGTH = 4000;
 const MAX_PHONE_LENGTH = 30;
 
+function textLength(string $value): int
+{
+    if (function_exists('mb_strlen')) {
+        return mb_strlen($value, 'UTF-8');
+    }
+
+    return strlen($value);
+}
+
 function normalizeText(string $value): string
 {
     $value = trim($value);
@@ -32,17 +41,17 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-if (mb_strlen($nombre) > MAX_NAME_LENGTH) {
+if (textLength($nombre) > MAX_NAME_LENGTH) {
     echo "El nombre excede la longitud permitida.";
     exit;
 }
 
-if (mb_strlen($mensaje) > MAX_MESSAGE_LENGTH) {
+if (textLength($mensaje) > MAX_MESSAGE_LENGTH) {
     echo "El mensaje excede la longitud permitida.";
     exit;
 }
 
-if ($telefono !== '' && mb_strlen($telefono) > MAX_PHONE_LENGTH) {
+if ($telefono !== '' && textLength($telefono) > MAX_PHONE_LENGTH) {
     echo "El teléfono excede la longitud permitida.";
     exit;
 }
