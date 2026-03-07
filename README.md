@@ -10,8 +10,8 @@ Este es un sitio web desarrollado con:
 ## Estructura del proyecto
 
 index.html -> página principal  
-/email -> Solicitudes a enviarse
-/email/Sended -> Solicitudes enviadas
+/email -> Escrive un archivo para almacenar lo capturado en la forma
+/email/Sended -> Guarda los archivos ya procesados del directorio /email
 /img -> imágenes mostradas en las paginas
 /pdf -> pdf mostrado en las paginas
 
@@ -23,6 +23,7 @@ Sitio informativo para mostrar servicios y contacto.
 
 - Se agregó `scripts/optimize_images.php` para flujo seguro:
   1. Genera versiones `.webp` en `img/optimized-webp/` (si `imagewebp()` está disponible en tu PHP).
+  2. Genera versiones `.avif` en `img/optimized-avif/` (si `imageavif()` está disponible en tu PHP).
 
 Comando:
 
