@@ -1,8 +1,8 @@
 <?php
 /**
- * Optimiza imágenes generando AVIF cuando la extensión GD lo permite.
+ * Optimiza imágenes generando WebP cuando la extensión GD lo permite.
  *
- * - Genera .avif en: img/optimized-avif/ (si imageavif está disponible)
+ * - Genera .webp en: img/optimized-webp/ (si imagewebp está disponible)
  *
  * Uso:
  *   php scripts/optimize_images.php
@@ -18,22 +18,22 @@ $htmlFiles = [
     $root . '/contact.html',
 ];
 
-$optimizedAvifDir = $root . '/img/optimized-avif';
+$optimizedWebpDir = $root . '/img/optimized-webp';
 
-if (!is_dir($optimizedAvifDir) && !mkdir($optimizedAvifDir, 0755, true) && !is_dir($optimizedAvifDir)) {
-    fwrite(STDERR, "No se pudo crear el directorio: {$optimizedAvifDir}\n");
+if (!is_dir($optimizedWebpDir) && !mkdir($optimizedWebpDir, 0755, true) && !is_dir($optimizedWebpDir)) {
+    fwrite(STDERR, "No se pudo crear el directorio: {$optimizedWebpDir}\n");
     exit(1);
 }
 
 preg_match_all('/<img[^>]*src="([^"]+)"/i', implode("\n", array_map('file_get_contents', $htmlFiles)), $matches);
 $sources = array_unique($matches[1]);
 
-$canCreateAvif = function_exists('imageavif');
-if (!$canCreateAvif) {
-    fwrite(STDOUT, "Aviso: imageavif() no está disponible.\n");
+$canCreateWebp = function_exists('imagewebp');
+if (!$canCreateWebp) {
+    fwrite(STDOUT, "Aviso: imagewebp() no está disponible.\n");
 }
 
-$avifConverted = 0;
+$webpConverted = 0;
 $skipped = 0;
 
 foreach ($sources as $src) {
@@ -48,7 +48,7 @@ foreach ($sources as $src) {
         continue;
     }
 
-    if (!$canCreateAvif) {
+    if (!$canCreateWebp) {
         continue;
     }
 
@@ -74,22 +74,22 @@ foreach ($sources as $src) {
         continue;
     }
 
-    $targetSubdir = $optimizedAvifDir . '/' . ($relativeDir === '.' ? '' : $relativeDir);
+    $targetSubdir = $optimizedWebpDir . '/' . ($relativeDir === '.' ? '' : $relativeDir);
     if (!is_dir($targetSubdir)) {
         mkdir($targetSubdir, 0755, true);
     }
-    $targetPath = rtrim($targetSubdir, '/') . '/' . $basename . '.avif';
+    $targetPath = rtrim($targetSubdir, '/') . '/' . $basename . '.webp';
 
-    if (imageavif($image, $targetPath, 50)) {
-        $avifConverted++;
+    if (imagewebp($image, $targetPath, 82)) {
+        $webpConverted++;
     } else {
         $skipped++;
-        fwrite(STDOUT, "Skip (falló conversión avif): {$src}\n");
+        fwrite(STDOUT, "Skip (falló conversión webp): {$src}\n");
     }
 
     imagedestroy($image);
 }
 
 fwrite(STDOUT, "\nResumen:\n");
-fwrite(STDOUT, "- AVIF generados: {$avifConverted}\n");
+fwrite(STDOUT, "- WebP generados: {$webpConverted}\n");
 fwrite(STDOUT, "- Elementos omitidos: {$skipped}\n");
