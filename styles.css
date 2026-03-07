@@ -200,6 +200,19 @@ a {
   border-radius: 8px;
 }
 
+
+.tab-button:focus-visible {
+  outline: 3px solid #003d99;
+  outline-offset: 2px;
+}
+
+.tooltip-image:focus-visible,
+.tooltip-image-d:focus-visible {
+  outline: 3px solid #003d99;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
 .tab-button.active {
   background: #B8D4FF;
   border-bottom: 2px solid #000;
