@@ -18,3 +18,14 @@ index.html -> página principal
 ## Objetivo
 
 Sitio informativo para mostrar servicios y contacto.
+
+## Optimización de imágenes
+
+- Se agregó `scripts/optimize_images.php` para flujo seguro:
+  1. Genera versiones `.webp` en `img/optimized-webp/` (si `imagewebp()` está disponible en tu PHP).
+
+Comando:
+
+```bash
+php scripts/optimize_images.php
+```

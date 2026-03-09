@@ -12,7 +12,7 @@
 		<!-- Menú principal -->
 		<header>
 			<div class="logo">
-				<img src="img/logo.jpg" alt="Logo" />
+				<img src="img/logo.jpg" alt="Logo" decoding="async" width="141" height="116" />
 			</div>
 			<div class="nav">
 				<!-- Botón hamburguesa (solo visible en móvil) -->
@@ -63,38 +63,14 @@
 					</form>
 					<div id="respuesta"></div> <!-- Lugar donde mostrar mensajes -->
 				</div>
-				<!--
-				<script src="script.js"></script>
-				-->
-				<script>
-					document.getElementById("formulario-contacto").addEventListener("submit", function(e) {
-						e.preventDefault(); // Evita que se recargue la página
-						
-						const form = e.target;
-						const formData = new FormData(form);
-						
-						fetch("guardar.php", {
-							method: "POST",
-							body: formData
-						})
-						.then(response => response.text()) // o .json() si tu PHP devuelve JSON
-						.then(data => {
-							alert(data); // Muestra el mensaje como alerta
-							form.reset(); // Limpia el formulario si quieres
-						})
-						.catch(error => {
-							console.error("Error en el envío:", error);
-							alert("Hubo un problema al enviar el formulario.");
-						});
-					});
-				</script>
 			</section>
 		</main>
 			<!-- Pie de pagina -->
 		<footer>
 			<p>&copy; 2025 Baja Studios. All rights reserved.</p>
 		</footer>
-		<!-- Bootstrap JS + dependencias -->
+		<script src="script.js"></script>
+			<!-- Bootstrap JS + dependencias -->
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 	</body>
