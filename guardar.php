@@ -1,7 +1,8 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo "Acceso no permitido.";
-    exit;
+	http_response_code(405);
+	echo "Acceso no permitido.";
+	exit;
 }
 
 const MAX_NAME_LENGTH = 120;
