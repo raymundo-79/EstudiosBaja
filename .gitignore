@@ -1,5 +1,3 @@
 node_modules/
 .vscode/
 *.log
-img/optimized-webp/
-img/optimized-avif/
