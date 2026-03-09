@@ -1,95 +1,182 @@
 /*
 // Funciones para el funcionamiento del menu en todas las paginas.
-const menuLinks = document.querySelectorAll('.menu-link');	// Obtener todos los enlaces de menú
-// Agregar el evento de clic a cada enlace
+const menuLinks = document.querySelectorAll('.menu-link');
 menuLinks.forEach(link => {
   link.addEventListener('click', (e) => {
-    e.preventDefault(); // Prevenir el comportamiento por defecto (no recargar la página)
-
-    // Obtener el nombre de la página a mostrar
+    e.preventDefault();
     const pageId = e.target.getAttribute('data-page');
-
-    // Ocultar todas las secciones
     const pages = document.querySelectorAll('.page');
-    pages.forEach(page => {
-      page.classList.remove('active');
-    });
-
-    // Mostrar la sección correspondiente
+    pages.forEach(page => page.classList.remove('active'));
     const activePage = document.getElementById(pageId);
-    if (activePage) {
-      activePage.classList.add('active');
-    }
+    if (activePage) activePage.classList.add('active');
   });
 });
 */
-// Funciones para el funcionamiento de los paneles en la pagina facilities.html.
+
 function showTab(index) {
   const buttons = document.querySelectorAll('.tab-button');
   const panels = document.querySelectorAll('.tab-panel');
 
-  // Remueve la clase 'active' de todos los botones y paneles
-  buttons.forEach(btn => btn.classList.remove('active'));
-  panels.forEach(panel => panel.classList.remove('active'));
-
-  // Agrega 'active' al botón y panel seleccionados
-  buttons[index].classList.add('active');
-  panels[index].classList.add('active');
-}
-
-// Funciones para el funcionamiento de los tooltip en la pagina facilities.html y production.html.
-function toggleTooltip(imgElement) {
-  const container = imgElement.parentElement;
-  const tooltip = container.querySelector('.tooltip-box');
-
-  // Cierra cualquier otro tooltip abierto
-  document.querySelectorAll('.tooltip-box').forEach(t => {
-    if (t !== tooltip) t.style.display = 'none';
+  buttons.forEach((btn, btnIndex) => {
+    const isActive = btnIndex === index;
+    btn.classList.toggle('active', isActive);
+    btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    btn.setAttribute('tabindex', isActive ? '0' : '-1');
   });
 
-  // Alternar visibilidad del tooltip clicado
-  tooltip.style.display = (tooltip.style.display === 'block') ? 'none' : 'block';
+  panels.forEach((panel, panelIndex) => {
+    const isActive = panelIndex === index;
+    panel.classList.toggle('active', isActive);
+    panel.hidden = !isActive;
+  });
 }
 
-// Opcional: cerrar tooltip si se hace clic fuera
-document.addEventListener('click', function (e) {
-  if (!e.target.classList.contains('tooltip-image')) {
-    document.querySelectorAll('.tooltip-box').forEach(t => {
-      t.style.display = 'none';
+function setTooltipVisibility(image, tooltip, isVisible) {
+  if (!tooltip || !image) return;
+  tooltip.style.display = isVisible ? 'block' : 'none';
+  tooltip.setAttribute('aria-hidden', isVisible ? 'false' : 'true');
+  image.setAttribute('aria-expanded', isVisible ? 'true' : 'false');
+}
+
+function closeAllTooltips(exceptTooltip = null) {
+  document.querySelectorAll('.tooltip-box').forEach(tooltip => {
+    if (tooltip !== exceptTooltip) {
+      const container = tooltip.parentElement;
+      const image = container ? container.querySelector('.tooltip-image, .tooltip-image-d') : null;
+      setTooltipVisibility(image, tooltip, false);
+    }
+  });
+}
+
+function toggleTooltip(imgElement) {
+  const container = imgElement.parentElement;
+  if (!container) return;
+
+  const tooltip = container.querySelector('.tooltip-box');
+  if (!tooltip) return;
+
+  const isCurrentlyVisible = tooltip.style.display === 'block';
+  closeAllTooltips(tooltip);
+  setTooltipVisibility(imgElement, tooltip, !isCurrentlyVisible);
+}
+
+function initializeTabs() {
+  const buttons = document.querySelectorAll('.tab-button');
+  const panels = document.querySelectorAll('.tab-panel');
+  if (!buttons.length || !panels.length) return;
+
+  buttons.forEach((button, index) => {
+    button.setAttribute('role', 'tab');
+    button.id = button.id || `tab-${index}`;
+    button.setAttribute('aria-controls', `tab-panel-${index}`);
+
+    if (panels[index]) {
+      panels[index].id = `tab-panel-${index}`;
+      panels[index].setAttribute('role', 'tabpanel');
+      panels[index].setAttribute('aria-labelledby', button.id);
+    }
+
+    button.addEventListener('click', () => showTab(index));
+    button.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        showTab(index);
+      }
     });
+  });
+
+  const activeIndex = Array.from(buttons).findIndex(btn => btn.classList.contains('active'));
+  showTab(activeIndex >= 0 ? activeIndex : 0);
+}
+
+function initializeTooltips() {
+  const images = document.querySelectorAll('.tooltip-image, .tooltip-image-d');
+
+  images.forEach((image, index) => {
+    const container = image.parentElement;
+    const tooltip = container ? container.querySelector('.tooltip-box') : null;
+    if (!tooltip) return;
+
+    image.setAttribute('tabindex', '0');
+    image.setAttribute('role', 'button');
+    image.setAttribute('aria-haspopup', 'true');
+    image.setAttribute('aria-expanded', 'false');
+
+    const tooltipId = tooltip.id || `tooltip-${index}`;
+    tooltip.id = tooltipId;
+    tooltip.setAttribute('role', 'tooltip');
+    tooltip.setAttribute('aria-hidden', 'true');
+    image.setAttribute('aria-describedby', tooltipId);
+
+    if (/^(Image|Diagram)\s+\d+\s+tooltip$/i.test(tooltip.textContent.trim())) {
+      const label = image.getAttribute('alt') || `Imagen ${index + 1}`;
+      tooltip.textContent = `${label}: fotografía de referencia de Baja Studios.`;
+    }
+
+    image.addEventListener('click', event => {
+      event.stopPropagation();
+      toggleTooltip(image);
+    });
+
+    image.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleTooltip(image);
+      }
+    });
+  });
+}
+
+// Cerrar tooltip si se hace clic fuera
+document.addEventListener('click', function (e) {
+  if (!e.target.classList.contains('tooltip-image') && !e.target.classList.contains('tooltip-image-d')) {
+    closeAllTooltips();
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeAllTooltips();
   }
 });
 
 // Funciones para el mensaje de enviado
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("formulario-contacto");
+document.addEventListener('DOMContentLoaded', function () {
+  initializeTabs();
+  initializeTooltips();
+
+  const form = document.getElementById('formulario-contacto');
 
   if (form) {
-    form.addEventListener("submit", function (e) {
-      e.preventDefault(); // Evita que se recargue la página
+    const formTimestamp = document.getElementById('form_ts');
+    if (formTimestamp) {
+      formTimestamp.value = String(Math.floor(Date.now() / 1000));
+    }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
 
       const formData = new FormData(form);
 
-      fetch("guardar.php", {
-        method: "POST",
+      fetch('guardar.php', {
+        method: 'POST',
         body: formData
       })
-      .then(response => response.text()) // tu PHP devuelve texto
-      .then(data => {
-        alert(data);           // Mostrar el resultado en alerta
-        form.reset();          // Limpiar el formulario
-        document.getElementById("respuesta").textContent = data; // Opcional: mostrar también en pantalla
-      })
-      .catch(error => {
-        console.error("Error en el envío:", error);
-        alert("Hubo un problema al enviar el formulario.");
-      });
+        .then(response => response.text())
+        .then(data => {
+          alert(data);
+          form.reset();
+          const responseContainer = document.getElementById('respuesta');
+          if (responseContainer) {
+            responseContainer.textContent = data;
+          }
+        })
+        .catch(error => {
+          console.error('Error en el envío:', error);
+          alert('Hubo un problema al enviar el formulario.');
+        });
     });
   }
 });
-
-
-
 
 // === Doble clic para ampliar imagen ===
 document.addEventListener('DOMContentLoaded', () => {
@@ -98,10 +185,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const imagenAmpliada = document.getElementById('imagen-ampliada');
   const btnCerrar = document.querySelector('.cerrar');
 
+  if (!overlay || !imagenAmpliada || !btnCerrar) {
+    return;
+  }
+
   let scale = 1;
   let lastDistance = 0;
 
-  // === Mostrar imagen ===
   imagenes.forEach(img => {
     img.addEventListener('dblclick', () => {
       imagenAmpliada.src = img.src;
@@ -111,7 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // === Cerrar ===
   const cerrarVisor = () => {
     overlay.style.display = 'none';
     document.body.style.overflow = 'auto';
@@ -126,7 +215,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Escape') cerrarVisor();
   });
 
-  // === Zoom con rueda del mouse ===
   overlay.addEventListener('wheel', e => {
     e.preventDefault();
     if (e.deltaY < 0) scale *= 1.1;
@@ -134,7 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
     applyZoom();
   });
 
-  // === Zoom con dos dedos (pinch) ===
   overlay.addEventListener('touchmove', e => {
     if (e.touches.length === 2) {
       e.preventDefault();
@@ -144,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (lastDistance) {
         const delta = distance / lastDistance;
         scale *= delta;
-        scale = Math.min(Math.max(0.5, scale), 5); // límites
+        scale = Math.min(Math.max(0.5, scale), 5);
         applyZoom();
       }
       lastDistance = distance;
@@ -155,7 +242,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.touches.length < 2) lastDistance = 0;
   });
 
-  // === Funciones auxiliares ===
   function applyZoom() {
     imagenAmpliada.style.transform = `scale(${scale})`;
   }
@@ -167,7 +253,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-
 /*
 // === Menú hamburguesa compatible con iPhone ===
 document.addEventListener('DOMContentLoaded', () => {
@@ -176,16 +261,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const toggleMenu = () => {
     nav.classList.toggle('show');
-    // Cambia el icono ☰ ↔ ✖
     toggle.textContent = nav.classList.contains('show') ? '✖' : '☰';
   };
 
-  // Para clicks y toques táctiles (Safari, Android, etc.)
   toggle.addEventListener('click', toggleMenu);
   toggle.addEventListener('touchstart', e => {
     e.preventDefault();
     toggleMenu();
   });
 });
-
 */
