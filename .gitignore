@@ -1,3 +1,5 @@
 node_modules/
 .vscode/
 *.log
+email/.rate_limit/
+email/*_contacto.txt

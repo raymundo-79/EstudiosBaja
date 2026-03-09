@@ -157,6 +157,15 @@ form input, form textarea {
   border: 1px solid #ccc;
 }
 
+
+.hp-field {
+  position: absolute !important;
+  left: -10000px !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 form button {
   padding: 10px;
   color: white;

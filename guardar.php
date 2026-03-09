@@ -13,6 +13,11 @@ const MIN_MESSAGE_LENGTH = 10;
 const MAX_PHONE_LENGTH = 30;
 const MIN_PHONE_LENGTH = 7;
 
+const RATE_LIMIT_MAX_REQUESTS = 5;
+const RATE_LIMIT_WINDOW_SECONDS = 600;
+const MIN_FORM_AGE_SECONDS = 3;
+const MAX_FORM_AGE_SECONDS = 86400;
+
 function textLength(string $value): int
 {
     if (function_exists('mb_strlen')) {
@@ -28,6 +33,100 @@ function normalizeText(string $value): string
     $value = preg_replace("/\r\n?|\n/u", "\n", $value) ?? '';
     $value = preg_replace("/\n{3,}/u", "\n\n", $value) ?? '';
     return $value;
+}
+
+function getClientIp(): string
+{
+    $ip = $_SERVER['HTTP_CF_CONNECTING_IP'] ?? $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+    return preg_replace('/[^0-9a-fA-F:\\.]/', '', (string) $ip) ?: '0.0.0.0';
+}
+
+function checkRateLimit(string $ip): bool
+{
+    $rateDir = __DIR__ . '/email/.rate_limit';
+    if (!is_dir($rateDir) && !mkdir($rateDir, 0755, true) && !is_dir($rateDir)) {
+        return false;
+    }
+
+    $file = $rateDir . '/' . hash('sha256', $ip) . '.json';
+    $now = time();
+    $windowStart = $now - RATE_LIMIT_WINDOW_SECONDS;
+
+    $entries = [];
+    if (is_file($file)) {
+        $decoded = json_decode((string) file_get_contents($file), true);
+        if (is_array($decoded)) {
+            $entries = array_values(array_filter($decoded, static function ($timestamp) use ($windowStart) {
+                return is_int($timestamp) && $timestamp >= $windowStart;
+            }));
+        }
+    }
+
+    if (count($entries) >= RATE_LIMIT_MAX_REQUESTS) {
+        return false;
+    }
+
+    $entries[] = $now;
+    file_put_contents($file, json_encode($entries));
+    return true;
+}
+
+function verifyTurnstile(string $secret, string $token, string $ip): bool
+{
+    $payload = http_build_query([
+        'secret' => $secret,
+        'response' => $token,
+        'remoteip' => $ip,
+    ]);
+
+    $context = stream_context_create([
+        'http' => [
+            'method' => 'POST',
+            'header' => "Content-Type: application/x-www-form-urlencoded\r\n",
+            'content' => $payload,
+            'timeout' => 8,
+        ],
+    ]);
+
+    $result = @file_get_contents('https://challenges.cloudflare.com/turnstile/v0/siteverify', false, $context);
+    if ($result === false) {
+        return false;
+    }
+
+    $decoded = json_decode($result, true);
+    return is_array($decoded) && !empty($decoded['success']);
+}
+
+$clientIp = getClientIp();
+if (!checkRateLimit($clientIp)) {
+    http_response_code(429);
+    echo "Demasiadas solicitudes. Intenta de nuevo en unos minutos.";
+    exit;
+}
+
+$honeypot = trim((string) ($_POST['website'] ?? ''));
+if ($honeypot !== '') {
+    http_response_code(400);
+    echo "Solicitud inválida.";
+    exit;
+}
+
+$formTimestamp = (int) ($_POST['form_ts'] ?? 0);
+$formAge = time() - $formTimestamp;
+if ($formTimestamp <= 0 || $formAge < MIN_FORM_AGE_SECONDS || $formAge > MAX_FORM_AGE_SECONDS) {
+    http_response_code(400);
+    echo "Formulario inválido o expirado.";
+    exit;
+}
+
+$turnstileSecret = trim((string) getenv('TURNSTILE_SECRET'));
+if ($turnstileSecret !== '') {
+    $turnstileToken = trim((string) ($_POST['cf-turnstile-response'] ?? ''));
+    if ($turnstileToken === '' || !verifyTurnstile($turnstileSecret, $turnstileToken, $clientIp)) {
+        http_response_code(400);
+        echo "No se pudo validar el captcha.";
+        exit;
+    }
 }
 
 $email = trim((string) ($_POST['email'] ?? ''));
@@ -80,17 +179,18 @@ $contenido = "-------------------------------\n";
 $contenido .= "Nombre: $nombre\n";
 $contenido .= "Correo Electrónico: $email\n";
 $contenido .= "Teléfono: " . ($telefono !== '' ? $telefono : "No proporcionado") . "\n";
+$contenido .= "IP: $clientIp\n";
 $contenido .= "Mensaje:\n$mensaje\n";
 $contenido .= "-------------------------------\n\n";
 
-$carpeta = __DIR__ . "/email";
+$carpeta = __DIR__ . '/email';
 if (!is_dir($carpeta) && !mkdir($carpeta, 0755, true) && !is_dir($carpeta)) {
     http_response_code(500);
     echo "Hubo un error al preparar el almacenamiento.";
     exit;
 }
 
-$archivo = $carpeta . "/" . time() . "_contacto.txt";
+$archivo = $carpeta . '/' . time() . '_contacto.txt';
 
 if (file_put_contents($archivo, $contenido) !== false) {
     echo "Formulario enviado correctamente. Gracias por contactarnos.";

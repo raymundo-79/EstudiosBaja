@@ -148,6 +148,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('formulario-contacto');
 
   if (form) {
+    const formTimestamp = document.getElementById('form_ts');
+    if (formTimestamp) {
+      formTimestamp.value = String(Math.floor(Date.now() / 1000));
+    }
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
