@@ -157,6 +157,15 @@ form input, form textarea {
   border: 1px solid #ccc;
 }
 
+
+.hp-field {
+  position: absolute !important;
+  left: -10000px !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 form button {
   padding: 10px;
   color: white;
@@ -198,6 +207,19 @@ a {
 .tab-button:hover {
   background: #E6F0FF;
   border-radius: 8px;
+}
+
+
+.tab-button:focus-visible {
+  outline: 3px solid #003d99;
+  outline-offset: 2px;
+}
+
+.tooltip-image:focus-visible,
+.tooltip-image-d:focus-visible {
+  outline: 3px solid #003d99;
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
 .tab-button.active {
