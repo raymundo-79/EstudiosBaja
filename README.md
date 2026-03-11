@@ -37,8 +37,3 @@ php scripts/optimize_images.php
 - Tiempo mínimo de formulario: evita envíos instantáneos automatizados.
 - Turnstile obligatorio en backend: debes definir `TURNSTILE_SECRET` en tu entorno para validar captcha.
 
-Ejemplo de configuración local:
-
-```bash
-export TURNSTILE_SECRET=tu_secret_key
-```

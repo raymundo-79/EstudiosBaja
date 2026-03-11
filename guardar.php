@@ -37,7 +37,7 @@ function normalizeText(string $value): string
 
 function getClientIp(): string
 {
-    $ip = $_SERVER['HTTP_CF_CONNECTING_IP'] ?? $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+    $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
     return preg_replace('/[^0-9a-fA-F:\\.]/', '', (string) $ip) ?: '0.0.0.0';
 }
 
@@ -71,32 +71,6 @@ function checkRateLimit(string $ip): bool
     return true;
 }
 
-function verifyTurnstile(string $secret, string $token, string $ip): bool
-{
-    $payload = http_build_query([
-        'secret' => $secret,
-        'response' => $token,
-        'remoteip' => $ip,
-    ]);
-
-    $context = stream_context_create([
-        'http' => [
-            'method' => 'POST',
-            'header' => "Content-Type: application/x-www-form-urlencoded\r\n",
-            'content' => $payload,
-            'timeout' => 8,
-        ],
-    ]);
-
-    $result = @file_get_contents('https://challenges.cloudflare.com/turnstile/v0/siteverify', false, $context);
-    if ($result === false) {
-        return false;
-    }
-
-    $decoded = json_decode($result, true);
-    return is_array($decoded) && !empty($decoded['success']);
-}
-
 $clientIp = getClientIp();
 if (!checkRateLimit($clientIp)) {
     http_response_code(429);
@@ -116,20 +90,6 @@ $formAge = time() - $formTimestamp;
 if ($formTimestamp <= 0 || $formAge < MIN_FORM_AGE_SECONDS || $formAge > MAX_FORM_AGE_SECONDS) {
     http_response_code(400);
     echo "Formulario inválido o expirado.";
-    exit;
-}
-
-$turnstileSecret = trim((string) getenv('TURNSTILE_SECRET'));
-if ($turnstileSecret === '') {
-    http_response_code(500);
-    echo "Configuración incompleta del servidor: falta TURNSTILE_SECRET.";
-    exit;
-}
-
-$turnstileToken = trim((string) ($_POST['cf-turnstile-response'] ?? ''));
-if ($turnstileToken === '' || !verifyTurnstile($turnstileSecret, $turnstileToken, $clientIp)) {
-    http_response_code(400);
-    echo "No se pudo validar el captcha.";
     exit;
 }
 
