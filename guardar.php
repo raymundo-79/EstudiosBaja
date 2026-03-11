@@ -143,7 +143,6 @@ $contenido = "-------------------------------\n";
 $contenido .= "Nombre: $nombre\n";
 $contenido .= "Correo Electrónico: $email\n";
 $contenido .= "Teléfono: " . ($telefono !== '' ? $telefono : "No proporcionado") . "\n";
-$contenido .= "IP: $clientIp\n";
 $contenido .= "Mensaje:\n$mensaje\n";
 $contenido .= "-------------------------------\n\n";
 
