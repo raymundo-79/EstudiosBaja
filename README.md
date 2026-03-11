@@ -10,8 +10,7 @@ Este es un sitio web desarrollado con:
 ## Estructura del proyecto
 
 index.html -> página principal  
-/email -> Solicitudes a enviarse
-/email/Sended -> Solicitudes enviadas
+/email -> Escrive un archivo para almacenar lo capturado en la forma
 /img -> imágenes mostradas en las paginas
 /pdf -> pdf mostrado en las paginas
 
@@ -36,3 +35,4 @@ php scripts/optimize_images.php
 - Honeypot: campo oculto `website` para bloquear bots simples.
 - Rate limit por IP: máximo 5 solicitudes en 10 minutos.
 - Tiempo mínimo de formulario: evita envíos instantáneos automatizados.
+
