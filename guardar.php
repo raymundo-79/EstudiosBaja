@@ -120,13 +120,17 @@ if ($formTimestamp <= 0 || $formAge < MIN_FORM_AGE_SECONDS || $formAge > MAX_FOR
 }
 
 $turnstileSecret = trim((string) getenv('TURNSTILE_SECRET'));
-if ($turnstileSecret !== '') {
-    $turnstileToken = trim((string) ($_POST['cf-turnstile-response'] ?? ''));
-    if ($turnstileToken === '' || !verifyTurnstile($turnstileSecret, $turnstileToken, $clientIp)) {
-        http_response_code(400);
-        echo "No se pudo validar el captcha.";
-        exit;
-    }
+if ($turnstileSecret === '') {
+    http_response_code(500);
+    echo "Configuración incompleta del servidor: falta TURNSTILE_SECRET.";
+    exit;
+}
+
+$turnstileToken = trim((string) ($_POST['cf-turnstile-response'] ?? ''));
+if ($turnstileToken === '' || !verifyTurnstile($turnstileSecret, $turnstileToken, $clientIp)) {
+    http_response_code(400);
+    echo "No se pudo validar el captcha.";
+    exit;
 }
 
 $email = trim((string) ($_POST['email'] ?? ''));

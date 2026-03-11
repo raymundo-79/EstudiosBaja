@@ -1,5 +1,6 @@
 node_modules/
 .vscode/
 *.log
+img/optimized-webp/
 email/.rate_limit/
 email/*_contacto.txt

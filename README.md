@@ -35,7 +35,7 @@ php scripts/optimize_images.php
 - Honeypot: campo oculto `website` para bloquear bots simples.
 - Rate limit por IP: máximo 5 solicitudes en 10 minutos.
 - Tiempo mínimo de formulario: evita envíos instantáneos automatizados.
-- Turnstile opcional: define `TURNSTILE_SECRET` en tu entorno para validar captcha.
+- Turnstile obligatorio en backend: debes definir `TURNSTILE_SECRET` en tu entorno para validar captcha.
 
 Ejemplo de configuración local:
 
